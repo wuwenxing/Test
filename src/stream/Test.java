@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
@@ -349,10 +350,32 @@ public class Test {
 		System.out.println("min=" + min);
 		System.out.println("groupMap=" + groupMap);
 	}
-	
-	
-	
-	
+
+
+	/**
+	 * @desc toMap
+	 * @desc groupingBy
+	 */
+	@org.junit.Test
+	public void test11() {
+		System.out.println("---test11---");
+		List<TExecuteTask> taskList = new ArrayList<>();
+		TExecuteTask r1 = new TExecuteTask();
+		r1.setExcId(1L);
+		r1.setTaskArea("广东深圳南山区西丽镇");
+		r1.setTaskAreaDetail("天虹");
+		taskList.add(r1);
+		TExecuteTask r2 = new TExecuteTask();
+		r2.setExcId(2L);
+		r2.setTaskArea("广东深圳南山区西丽镇");
+		r2.setTaskAreaDetail("人人乐");
+		taskList.add(r2);
+		
+		Map<Long, TExecuteTask> taskMap1 = taskList.stream().collect(Collectors.toMap(TExecuteTask::getExcId, Function.identity()));
+		
+		Map<String, List<TExecuteTask>> taskMap2 = taskList.stream().collect(Collectors.groupingBy(TExecuteTask::getTaskArea));
+		
+	}
 	
 	public static void main(String[] args) {
 		
