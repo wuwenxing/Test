@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +19,17 @@ import java.util.stream.Stream;
 
 import javax.swing.JButton;
 
+
 /**
  * @desc jdk8 stream 使用
  * @author wayne
  */
 public class Test {
+	
+	// TODO 以后该数据需要分发只每个web服务
+	// 临时记录每个服务的停止命令，每隔1秒执行一次，不需要实时；
+	// key = applicationName + serverPort + rtsp
+	public static Map<String, Integer> isEndMap = new HashMap<>();
 
 	/**
 	 * @desc 简单聚合运算
@@ -32,6 +39,19 @@ public class Test {
 	 */
 	@org.junit.Test
 	public void test1() {
+		String sourceName = "直数据_20185522.xls";
+		int beginIndex = sourceName.indexOf("_");
+		int endIndex = sourceName.indexOf(".");
+		if(beginIndex != -1 && beginIndex != -1){
+			String personCode = sourceName.substring(beginIndex+1, endIndex);
+			System.out.println(personCode);
+		}
+		
+		String str= "yyyy-MM-dd HH:mm:ss";
+		System.out.println(str.substring(0, 10));
+		System.out.println(str.substring(11, 19));
+		System.out.println(str.substring(17, 19));
+		
 		System.out.println("---test1---");
 		List<String> list = new ArrayList<String>();
 		list.add("A");
@@ -376,6 +396,82 @@ public class Test {
 		Map<String, List<TExecuteTask>> taskMap2 = taskList.stream().collect(Collectors.groupingBy(TExecuteTask::getTaskArea));
 		
 	}
+
+	/**
+	 * @desc 
+	 * @desc 
+	 */
+	@org.junit.Test
+	public void test12() {
+
+		Long dvid = 100L;
+		System.out.println(dvid%2);
+		System.out.println(dvid%2==0);
+		System.out.println(dvid.intValue()%2);
+		System.out.println(dvid.intValue()%2==0);
+		
+		Long dvid1 = 101L;
+		System.out.println(dvid1%2);
+		System.out.println(dvid1%2==0);
+		System.out.println(dvid1.intValue()%2);
+		System.out.println(dvid1.intValue()%2==0);
+		
+		// yyyy-MM-dd HH:mm:ss
+		String dateStr = "yyyy-MM-dd HH:mm:ss";
+		String yearStr = dateStr.substring(0, 4);
+		String monthStr = dateStr.substring(5, 7);
+		String dayStr = dateStr.substring(8, 10);
+		System.out.println(yearStr);
+		System.out.println(monthStr);
+		System.out.println(dayStr);
+		
+
+		int deviceIndex = 1;
+		Integer value = 0;
+		if(null != value){
+			value++;
+			value = value%2;
+		}else{
+			value = 0;
+		};
+
+		// 动态生成队列名称
+		StringBuffer queueName = new StringBuffer();
+		int index = deviceIndex*2;
+		if(value == 1){
+			index = deviceIndex*2 + 1;
+		}
+		if(index<10){
+			queueName.append("BIRD_QUEUE_").append("00").append(index);
+		}else if(index<100){
+			queueName.append("BIRD_QUEUE_").append("0").append(index);
+		}
+		System.out.println(queueName.toString());
+		
+	}
+
+	/**
+	 * @desc 
+	 * @desc 
+	 */
+	@org.junit.Test
+	public void test13() {
+		System.out.println(Test.isEndMap);
+
+		Integer flag = Test.isEndMap.get("bmp_web8871" + "birdStream");
+		System.out.println(flag != null && flag.equals(1));
+
+		Test.isEndMap.put("bmp_web8871" + "birdStream", 1);
+		Integer flag1 = Test.isEndMap.get("bmp_web8871" + "birdStream");
+		System.out.println(flag1 != null && flag1.equals(1));
+
+		Test.isEndMap.put("bmp_web8871" + "birdStream", 0);
+		Integer flag2 = Test.isEndMap.get("bmp_web8871" + "birdStream");
+		System.out.println(flag2 != null && flag2.equals(1));
+		
+		
+	}
+
 	
 	public static void main(String[] args) {
 		
